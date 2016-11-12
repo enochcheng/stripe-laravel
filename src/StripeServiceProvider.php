@@ -52,7 +52,8 @@ class StripeServiceProvider extends ServiceProvider
      */
     protected function registerStripe()
     {
-        $this->app->bindShared('stripe', function ($app) {
+        $this->app['stripe'] = $this->app->share(function($app)
+        {
             $config = $app['config']->get('services.stripe');
 
             $secret = isset($config['secret']) ? $config['secret'] : null;
@@ -72,7 +73,9 @@ class StripeServiceProvider extends ServiceProvider
      */
     protected function registerConfig()
     {
-        $this->app->bindShared('stripe.config', function ($app) {
+
+        $this->app['stripe.config'] = $this->app->share(function($app)
+        {
             return $app['stripe']->getConfig();
         });
 
